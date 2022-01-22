@@ -36,7 +36,7 @@ public class UrlController {
     }
 
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ShortUrlDto>> getAllUrls() {
         return new ResponseEntity<List<ShortUrlDto>>(
                 shortUrlDtoConverter.convertToDto(service.getAllShortUrl()), HttpStatus.OK

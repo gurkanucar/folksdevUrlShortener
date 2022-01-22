@@ -10,7 +10,7 @@ public class ShortUrlRequestConverter {
     public ShortUrl convertToEntity(ShortUrlRequest shortUrlRequest) {
         return ShortUrl.builder()
                 .url(shortUrlRequest.getUrl())
-                .code(shortUrlRequest.getCode())
+                .code(shortUrlRequest.getCode().toUpperCase())
                 .build();
     }
 
