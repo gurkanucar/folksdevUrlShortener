@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -38,17 +39,13 @@ public class UrlController {
 
     @GetMapping("/all")
     public ResponseEntity<List<ShortUrlDto>> getAllUrls() {
-        return new ResponseEntity<List<ShortUrlDto>>(
-                shortUrlDtoConverter.convertToDto(service.getAllShortUrl()), HttpStatus.OK
-        );
+        return ResponseEntity.ok(shortUrlDtoConverter.convertToDto(service.getAllShortUrl()));
     }
 
 
     @GetMapping("/show/{code}")
     public ResponseEntity<ShortUrlDto> getUrlByCode(@Valid @NotEmpty @PathVariable String code) {
-        return new ResponseEntity<ShortUrlDto>(
-                shortUrlDtoConverter.convertToDto(service.getUrlByCode(code)), HttpStatus.OK
-        );
+        return ResponseEntity.ok(shortUrlDtoConverter.convertToDto(service.getUrlByCode(code)));
     }
 
 
@@ -59,17 +56,16 @@ public class UrlController {
         URI uri = new URI(shortUrl.getUrl());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(uri);
-        return new ResponseEntity<>(
-               httpHeaders,HttpStatus.SEE_OTHER
-        );
+        return ResponseEntity.status(HttpStatus.SEE_OTHER).headers(httpHeaders).build();
     }
 
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody ShortUrlRequest shortUrlRequest){
-        ShortUrl shortUrl = shortUrlRequestConverter.convertToEntity(shortUrlRequest);
-        return new ResponseEntity<ShortUrlDto>(shortUrlDtoConverter.convertToDto(service.create(shortUrl)),
-                HttpStatus.CREATED);
+        ShortUrl createdShortUrl = service.create(shortUrlRequestConverter.convertToEntity(shortUrlRequest));
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{code}")
+                .buildAndExpand(createdShortUrl.getCode()).toUri();
+        return ResponseEntity.created(location).body(shortUrlDtoConverter.convertToDto(createdShortUrl));
     }
 
 

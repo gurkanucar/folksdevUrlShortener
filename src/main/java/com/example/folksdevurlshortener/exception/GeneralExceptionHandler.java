@@ -30,21 +30,21 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
                     errors.put(fieldName,errorMessage);
                 });
 
-        return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(errors);
     }
 
     @ExceptionHandler(ShortUrlNotFoundException.class)
     public ResponseEntity<?> shortUrlNotFoundException(ShortUrlNotFoundException e){
         Map<String , String > errors = new HashMap<>();
         errors.put("error",e.getMessage());
-        return new ResponseEntity<>(errors,HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
     }
 
     @ExceptionHandler(CodeAlreadyExists.class)
     public ResponseEntity<?> codeAlreadyExists(CodeAlreadyExists e){
         Map<String , String > errors = new HashMap<>();
         errors.put("error",e.getMessage());
-        return new ResponseEntity<>(errors,HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
     }
 
 
