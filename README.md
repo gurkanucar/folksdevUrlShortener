@@ -67,7 +67,7 @@ Recorded Stream: [https://www.youtube.com/watch?v=GOyMQ5UTueA](https://www.youtu
 - #### Create Short Url
 
 ```http
-  GET /show/{code}
+  POST /
 ```
 
 | Parameter | Type     | Description                       |
