@@ -44,6 +44,15 @@ Recorded Stream: [https://www.youtube.com/watch?v=GOyMQ5UTueA](https://www.youtu
 ```
 ##
 
+- #### Redirect
+
+```http
+  GET /{code}
+```
+You will be redirected to the URL of the code.
+
+##
+
 - #### Show Url of Code (alias)
 
 ```http
